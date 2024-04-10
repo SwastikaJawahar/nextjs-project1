@@ -7,6 +7,7 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  movie,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -235,5 +236,63 @@ export async function getUser(email: string) {
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
+  }
+}
+
+const ITEMS_PER_PAGE1 = 10; // Adjust as needed
+
+export async function fetchFilteredMovies(query: string, currentPage: number) {
+  noStore();
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE1;
+
+  try {
+    const movies = await sql<movie>`
+    SELECT
+      id,
+      title,
+      release_date,
+      popularity,
+      vote_average,
+      overview,
+      poster_path
+    FROM
+        movies
+    WHERE
+        title ILIKE ${`%${query}%`} OR
+        release_date::text ILIKE ${`%${query}%`} OR
+        overview ILIKE ${`%${query}%`}
+    ORDER BY
+        release_date DESC
+    LIMIT
+        ${ITEMS_PER_PAGE1}
+    OFFSET
+        ${offset}
+    `;
+
+    console.log('Fetched Movies List => ', movies.rows);
+
+    return movies.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch movies.');
+  }
+}
+
+export async function fetchMoviesPages(query: string) {
+  noStore();
+  try {
+    const count = await sql`SELECT COUNT(*)
+
+      FROM movies
+      WHERE
+        title ILIKE ${`%${query}%`} OR
+        overview ILIKE ${`%${query}%`}
+    `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE1);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of movies.');
   }
 }
