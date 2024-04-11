@@ -21,7 +21,7 @@ export default async function MoviesTable({
             <thead>
               <tr className="text-left text-sm font-medium">
                 <th className="px-3 py-3 sm:pl-6">Id</th>
-                <th className="px-3 py-3">Title</th>
+                <th className="max-w-[100px] px-3 py-3">Title</th>
                 <th className="px-3 py-3">Language</th>
 
                 <th className="px-3 py-3">Release Date</th>
@@ -34,7 +34,7 @@ export default async function MoviesTable({
               {movies?.map((movie) => (
                 <tr key={movie.id} className="border-b">
                   <td className="whitespace-nowrap px-3 py-3">{movie.id}</td>
-                  <td className="whitespace-nowrap px-3 py-3 ">
+                  <td className="whitespace-wrap max-w-[200px] px-3 py-3 ">
                     {movie.title}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
