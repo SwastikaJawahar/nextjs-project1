@@ -250,11 +250,11 @@ export async function fetchFilteredMovies(query: string, currentPage: number) {
     SELECT
       id,
       title,
+      original_language,
+      overview,
       release_date,
       popularity,
-      vote_average,
-      overview,
-      poster_path
+      vote_average    
     FROM
         movies
     WHERE

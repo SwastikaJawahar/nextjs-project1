@@ -20,29 +20,27 @@ export default async function MoviesTable({
           <table className="min-w-full text-gray-900">
             <thead>
               <tr className="text-left text-sm font-medium">
-                <th className="px-4 py-3 sm:pl-6">Poster</th>
-                <th className="px-3 py-3">Movie Title</th>
+                <th className="px-3 py-3 sm:pl-6">Id</th>
+                <th className="px-3 py-3">Title</th>
+                <th className="px-3 py-3">Language</th>
+
                 <th className="px-3 py-3">Release Date</th>
                 <th className="px-3 py-3">Popularity</th>
                 <th className="px-3 py-3">Vote Average</th>
-                <th className="px-3 py-3">Overview</th>
+                <th className="px-4 py-4">Overview</th>
               </tr>
             </thead>
             <tbody>
               {movies?.map((movie) => (
                 <tr key={movie.id} className="border-b">
-                  <td className="whitespace-nowrap px-4 py-3 sm:pl-6">
-                    <div className="flex items-center">
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                        className="rounded-md"
-                        width={50}
-                        height={36}
-                        alt={movie.title}
-                      />
-                    </div>
+                  <td className="whitespace-nowrap px-3 py-3">{movie.id}</td>
+                  <td className="whitespace-nowrap px-3 py-3 ">
+                    {movie.title}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">{movie.title}</td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {movie.original_language}
+                  </td>
+
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(movie.release_date)}
                   </td>
@@ -52,8 +50,8 @@ export default async function MoviesTable({
                   <td className="whitespace-nowrap px-3 py-3">
                     {movie.vote_average}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    <p>{movie.overview}</p>
+                  <td className="whitespace-wrap px-4 py-4">
+                    {movie.overview}
                   </td>
                 </tr>
               ))}
